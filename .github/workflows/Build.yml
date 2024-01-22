@@ -95,14 +95,10 @@ jobs:
         rm -rf packages
     
     - name: 发布固件至 Release
-      uses: softprops/action-gh-release@v1
-      if: steps.tag.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
-        body_path: release.txt
-        files: ${{ env.FIRMWARE }}/*
-  
-          
+        tag: "${{ env.DEVICE }}--${{ env.FILE_DATE }}"
+        artifacts: "openwrt/bin/targets/mediatek/mt7986/"
+        body: |
+          # 未测试×
           IP: 192.168.8.1 | Password: none
