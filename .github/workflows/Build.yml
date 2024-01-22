@@ -98,7 +98,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         tag: "${{ env.DEVICE }}--${{ env.FILE_DATE }}"
-        artifacts: "openwrt/bin/targets/mediatek/mt7986/"
+        artifacts: "openwrt/bin/targets/mediatek/mt7986/*"
         body: |
           # 未测试×
           IP: 192.168.8.1 | Password: none
