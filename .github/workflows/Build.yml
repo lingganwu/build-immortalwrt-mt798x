@@ -19,7 +19,7 @@ env:
   UPLOAD_OUTPUT: true
 
 jobs:
-   _Redmi-ax6000:
+   Redmi-ax6000-Build:
     runs-on: ubuntu-20.04
     permissions:
       contents: write
