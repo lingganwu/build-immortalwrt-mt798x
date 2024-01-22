@@ -15,11 +15,11 @@ env:
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   TZ: Asia/Shanghai
-  DEVICE: 360t7
+  DEVICE: Redmi-ax6000
   UPLOAD_OUTPUT: true
 
 jobs:
-   _360t7:
+   _Redmi-ax6000:
     runs-on: ubuntu-20.04
     permissions:
       contents: write
@@ -65,7 +65,7 @@ jobs:
     - name: 修改 Lan IP
       run: |
         cd openwrt
-        sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+        sed -i 's/192.168.1.1/192.168.8.1/g' package/base-files/files/bin/config_generate
         neofetch
 
     - name: 下载依赖
@@ -95,11 +95,14 @@ jobs:
         rm -rf packages
     
     - name: 发布固件至 Release
-      uses: ncipollo/release-action@v1
+      uses: softprops/action-gh-release@v1
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag: "${{ env.DEVICE }}--${{ env.FILE_DATE }}"
-        artifacts: "openwrt/bin/targets/*/*/*"
-        body: |
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: ${{ env.FIRMWARE }}/*
           # 未测试×
           
-          IP: 192.168.2.1 | Password: none
+          IP: 192.168.8.1 | Password: none
